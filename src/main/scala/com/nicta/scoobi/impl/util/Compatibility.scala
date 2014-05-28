@@ -7,6 +7,7 @@ import org.apache.hadoop.mapreduce._
 import org.apache.hadoop.io.SequenceFile.Reader
 import java.net.URI
 import org.apache.hadoop.filecache.DistributedCache
+import org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter
 
 object Compatibility {
 
@@ -84,4 +85,27 @@ object Compatibility {
       DistributedCache.addFileToClassPath(path, configuration)
   }
 
+  def newTaskInputOutputContext(conf: Configuration, id: TaskAttemptID): TaskInputOutputContext[Any, Any, Any, Any] = {
+    val attemptId = id
+    val attemptContext = Compatibility.newTaskAttemptContext(conf, attemptId)
+
+    /**
+     * Limited implementation of a task input output context for use in memory
+     * It is essentially only safe to access the configuration and the job/task ids on this context
+     */
+    val statusReporter = new StatusReporter {
+      def setStatus(p1: String) {}
+
+      def progress() = {}
+
+      def getCounter(p1: String, p2: String): Counter = ???
+
+      def getCounter(p1: Enum[_]): Counter = ???
+    }
+    new TaskInputOutputContext[Any, Any, Any, Any](conf, id, null, new FileOutputCommitter(null, attemptContext), statusReporter){
+      override def getCurrentValue: Any = ()
+      override def getCurrentKey: Any = ()
+      override def nextKeyValue(): Boolean = false
+    }
+  }
 }

@@ -4,9 +4,9 @@ organization := "com.nicta"
 
 name := "scoobi-compatibility-cdh3"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.10.4"
 
-version := "1.0.1"
+version := "1.0.2"
 
 libraryDependencies ++= Seq("org.apache.hadoop" % "hadoop-core"   % "0.20.2-cdh3u1",
                             "org.apache.avro"   % "avro-mapred"   % "1.7.4")
