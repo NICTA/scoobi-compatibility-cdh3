@@ -15,6 +15,14 @@ object Compatibility {
   def isDirectory(fileStatus: FileStatus): Boolean =
     fileStatus.isDir
 
+  /** @return true if the path is a directory */
+  def isDirectory(fs: FileSystem, path: Path): Boolean =
+    isDirectory(fs.getFileStatus(path))
+
+  /** @return the file system scheme */
+  def getScheme(fs: FileSystem): String =
+    fs.getUri.getScheme
+
   /** @return a sequence file reader */
   def newSequenceFileReader(configuration: Configuration, path: Path): SequenceFile.Reader =
     new Reader(FileSystem.get(configuration), path, configuration)
