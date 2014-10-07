@@ -8,6 +8,8 @@ scalaVersion := "2.10.4"
 
 version := "1.0.3"
 
+crossScalaVersions := Seq("2.10.4", "2.11.2")
+
 libraryDependencies ++= Seq("org.apache.hadoop" % "hadoop-core"   % "0.20.2-cdh3u1",
                             "org.apache.avro"   % "avro-mapred"   % "1.7.4")
 
